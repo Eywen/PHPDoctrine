@@ -194,6 +194,14 @@ class User implements JsonSerializable, Stringable
     }
 
     /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
      * Verifies that the given hash matches the user password.
      *
      * @param string $password password

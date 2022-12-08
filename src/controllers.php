@@ -35,3 +35,22 @@ function funcionUsuario(string $name): void
 {
     echo $name;
 }
+
+function funcionNewUsuario(): void
+{
+    //global $routes;
+
+    //$rutaListado = $routes->get('ruta_user_list')->getPath();
+
+    $entityManager = DoctrineConnector::getEntityManager();
+
+    $userRepository = $entityManager->getRepository(User::class);
+    $users = $userRepository->findBy();
+    var_dump($users);
+
+//    echo <<< MARCA_FIN
+//    <ul>
+//        <li><a href="$users">Listado Usuarios manual</a></li>
+//    </ul>
+//    MARCA_FIN;
+}
