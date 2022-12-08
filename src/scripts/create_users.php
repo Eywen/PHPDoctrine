@@ -41,16 +41,26 @@ if ($user instanceof User) {
 $result = new User($userName, $email, $password);
 try {
     if (!$user instanceof User) {
-        echo "Se va a agregar ". $result->getUsername() . PHP_EOL;
-        echo "Se va a agregar ". $result->getEmail() ." ya que no existe" . PHP_EOL;
-        echo "Se va a agregar " . $result->getPassword() . PHP_EOL;
-
         $entityManager->persist($result);
         $entityManager->flush();
-        echo 'Created User with ID ' . $result->getId()
-            . ' USER ' . $user->getUsername() . PHP_EOL;
     }
 } catch (Throwable $exception) {
     echo $exception->getMessage();
 }
+$userCreated = $entityManager
+    ->getRepository(User::class)
+    ->findOneBy(['email' => $email]);
+echo PHP_EOL . sprintf(
+        '  %2s: %20s %30s %7s' . PHP_EOL,
+        'Id', 'Username:', 'Email:', 'Enabled:'
+    );
+/** @var User $userCreated */
+echo sprintf(
+    '- %2d: %20s %30s %7s',
+    $userCreated->getId(),
+    $userCreated->getUsername(),
+    $userCreated->getEmail(),
+    ($userCreated->isEnabled()) ? 'true' : 'false'
+),
+PHP_EOL;
 
