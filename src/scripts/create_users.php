@@ -2,11 +2,10 @@
 
 
 /**
- * src/create_users.php
+ * src/scripts/create_users.php
  */
 require dirname(__DIR__, 2) . '/vendor/autoload.php';
 
-use MiW\Results\Entity\Result;
 use MiW\Results\Entity\User;
 use MiW\Results\Utility\DoctrineConnector;
 use MiW\Results\Utility\Utils;
