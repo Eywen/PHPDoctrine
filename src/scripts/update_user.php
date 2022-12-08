@@ -39,7 +39,7 @@ if (!$user instanceof User) {
 }
 
 echo "Se va a modificar usuario con id:". $userId . PHP_EOL;
-if (!empty($userName))
+
 for ($i = 2; $i < $argc; $i++) {
     // este punto para indicar en la ejecucion por consola del script que no queremos modificar ese parametro
     if ($argv[$i] != ".") {
