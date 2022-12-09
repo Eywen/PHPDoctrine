@@ -63,7 +63,11 @@ for ($i = 2; $i < $argc; $i++) {
                 break;*/
         }
     }
-    $entityManager->flush();
+    try {
+        $entityManager->flush();
+    } catch (Throwable $exception) {
+        echo $exception->getMessage() . PHP_EOL;
+    }
 }
 echo PHP_EOL . sprintf(
         '  %2s: %20s %30s %7s' . PHP_EOL,
