@@ -65,14 +65,7 @@ function list_action()
 
 function vistaListUSer($users): void
 {
-    echo <<< ____MARCA_FIN
-        <style>
-            table, th, td {
-              border: 2px solid #96D4D4;
-              border-collapse: collapse;
-            }
-        </style>
-    ____MARCA_FIN;
+    getTableStyle();
     echo "<table style='width:70%'>
             <tr>
                 <th><label>Nombre de usuario</label></th>
@@ -104,6 +97,17 @@ function vistaListUSer($users): void
     global $routes;
     $rutaNewUSerForm = $routes->get('ruta_user_form')->getPath();
     //echo "<a href=$rutaNewUSerForm>Insertar nuevo usuario prueba con rutas href</a>";
+    $TextButton= "new user";
+    getButtonNew($rutaNewUSerForm, $TextButton);
+}
+
+/**
+ * @param string $rutaNewUSerForm
+ * @param string $TextButton
+ * @return void
+ */
+function getButtonNew(string $rutaNewUSerForm, string $TextButton): void
+{
     echo <<< ____MARCA_FIN
     <style>
       button {
@@ -126,11 +130,24 @@ function vistaListUSer($users): void
     </style>
     
         <form>
-              <button type="button" onclick="window.location.href='$rutaNewUSerForm';" >new user</button>
+              <button type="button" onclick="window.location.href='$rutaNewUSerForm';" >$TextButton</button>
         </form>
     ____MARCA_FIN;
+}
 
-
+/**
+ * @return void
+ */
+function getTableStyle(): void
+{
+    echo <<< ____MARCA_FIN
+        <style>
+            table, th, td {
+              border: 2px solid #96D4D4;
+              border-collapse: collapse;
+            }
+        </style>
+    ____MARCA_FIN;
 }
 
 
