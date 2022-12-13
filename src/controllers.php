@@ -140,7 +140,7 @@ function funcionListadoResultados(): void
 
     $resultsRepository = $entityManager->getRepository(Result::class);
     $results = $resultsRepository->findAll();
-    echo "listado results "  . PHP_EOL;
+    //echo "listado results "  . PHP_EOL;
     vistaListResults($results);
 }
 
@@ -199,6 +199,15 @@ function funcionUpdateResultado (string $name){
             echo $exception->getMessage() . PHP_EOL;
         }
     }
+}
+
+function funcionResultado(string $name): void
+{
+    $entityManager = DoctrineConnector::getEntityManager();
+    $result = $entityManager
+        ->getRepository(Result::class)
+        ->findOneBy([ 'result' => $name ]);
+    var_dump($result);
 }
 
 //--------------------------------  VISTAS  ----------------------------

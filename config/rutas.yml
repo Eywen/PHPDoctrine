@@ -95,3 +95,10 @@ ruta_result_update:
     controller: 'funcionUpdateResultado'
     methods:
         - POST
+ruta_result:
+    path:     /results/{name}
+    controller: 'funcionResultado'
+    defaults:
+        name: _default_
+    methods:
+        - GET
