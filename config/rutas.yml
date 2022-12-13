@@ -84,3 +84,14 @@ ruta_result_new:
     controller: 'funcionNuevoResultado'
     methods:
         - POST
+
+ruta_result_form_update:
+    path: /results/{name}/resultformupdate
+    controller: 'vistaUpdateResult'
+    methods:
+        - GET
+ruta_result_update:
+    path: /results/{name}/update
+    controller: 'funcionUpdateResultado'
+    methods:
+        - POST

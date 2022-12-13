@@ -169,6 +169,38 @@ function funcionNuevoResultado(){
     }
 }
 
+function funcionUpdateResultado (string $name){
+    echo " modificar $name";
+    $entityManager = DoctrineConnector::getEntityManager();
+    $result = $entityManager
+        ->getRepository(Result::class)
+        ->findOneBy([ 'result' => $name ]);
+    //var_dump($result);
+
+    if (isset($_POST)){
+        if (isset($_POST['result'])) {
+            $result->setResult($_POST['result']);
+        }
+        if (isset($_POST['username'])) {
+
+            echo " usuario result " . $_POST['username'];
+            $user = $entityManager
+                ->getRepository(User::class)
+                ->findOneBy([ 'username' => $_POST['username'] ]);
+            $result->setUser($user);
+        }
+        try {
+            $entityManager->persist($result);
+            $entityManager->flush();
+            echo " Resultado modificado correctamente";
+            var_dump($result);
+        } catch (Throwable $exception) {
+            echo " El Resultado no se pudo modificar";
+            echo $exception->getMessage() . PHP_EOL;
+        }
+    }
+}
+
 //--------------------------------  VISTAS  ----------------------------
 
 function vistaListUSer($users): void
@@ -368,6 +400,56 @@ function getResultForm(string $ruta_result_new)
            <tr><td><label>Resultado: </label></td> 
                 <td><input type="number" name="result"  required></td></tr>  
         <tr><td colspan="2"><button type="submit">Crear</button></td></tr>
+    </table>
+   </form>
+____MARCA_FIN;
+}
+
+
+function vistaUpdateResult(string $name)
+{
+    echo "Update result";
+    $ruta_result_update = "/results/$name/update";
+    getTableStyle();
+    getResultFormUpdate($ruta_result_update,$name);
+}
+
+function getResultFormUpdate(string $ruta_result_action, string $name): void{
+
+    $entityManager = DoctrineConnector::getEntityManager();
+    $users = $entityManager
+        ->getRepository(User::class)
+        ->findAll();
+
+    $result = $entityManager
+        ->getRepository(Result::class)
+        ->findOneBy([ 'result' => $name ]);
+
+    $resultado = $result->getResult();
+
+    echo <<< ____MARCA_FIN
+    
+    <form method="post" action="$ruta_result_action">
+        <h2>Creación de resultado</h2>
+        <table style='width:15%'>
+          
+           <tr>
+            <td><label>Usuario: </label></td> 
+            <td><select name="username">
+    ____MARCA_FIN;
+
+    foreach ($users as $user) {
+        $username = $user->getUsername();
+        echo "<option value='$username'>$username</option>";
+    }
+
+    echo <<< ____MARCA_FIN
+               </select>
+            </td>
+           </tr>
+           <tr><td><label>Resultado: </label></td> 
+                <td><input type="number" name="result" value = "$resultado" ></td></tr>  
+        <tr><td colspan="2"><button type="submit">Modificar</button></td></tr>
     </table>
    </form>
 ____MARCA_FIN;
