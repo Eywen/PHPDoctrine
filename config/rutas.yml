@@ -66,3 +66,9 @@ ruta_list_prueba:
     controller: 'list_action'
     methods:
         - GET
+
+ruta_results_list:
+    path:     /results
+    controller: 'funcionListadoResultados'
+    methods:
+        - GET

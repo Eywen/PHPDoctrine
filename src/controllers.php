@@ -8,6 +8,7 @@
  */
 
 use MiW\Results\Entity\User;
+use MiW\Results\Entity\Result;
 use MiW\Results\Utility\DoctrineConnector;
 use MiW\Results\UserView;
 
@@ -16,9 +17,11 @@ function funcionHomePage(): void
     global $routes;
 
     $rutaListado = $routes->get('ruta_user_list')->getPath();
+    $rutaListadoResultados = $routes->get('ruta_results_list')->getPath();
     echo <<< MARCA_FIN
     <ul>
         <li><a href="$rutaListado">Listado Usuarios</a></li>
+        <li><a href="$rutaListadoResultados">Listado Resultados</a></li>
     </ul>
     MARCA_FIN;
 }
@@ -130,8 +133,18 @@ function funcionEliminarUsuario ($name){
     echo "Usuario: " . $name . " eliminado correctamente: "  . PHP_EOL;
 }
 
+//--------------------------------Results------------------------------
+function funcionListadoResultados(): void
+{
+    $entityManager = DoctrineConnector::getEntityManager();
 
-///////////////////////////  VISTAS  //////////////////////////////
+    $resultsRepository = $entityManager->getRepository(Result::class);
+    $results = $resultsRepository->findAll();
+    echo "listado results "  . PHP_EOL;
+    vistaListResults($results);
+}
+
+//--------------------------------  VISTAS  ----------------------------
 
 function vistaListUSer($users): void
 {
@@ -256,7 +269,42 @@ function getUSerFormUpdate(string $ruta_user_action, string $name): void{
     ____MARCA_FIN;
 }
 
-///////////////////////////Html styles
+function vistaListResults($results): void
+{
+    getTableStyle();
+    echo "<table style='width:70%'>
+            <tr>
+                <th><label>Resultado</label></th>
+                <th><label>Usuario</label></th>
+                <th><label>Fecha</label></th>
+                <th colspan='3'><label>Operaciones</label></th>
+            </tr>";
+    foreach ($results as $result) {
+        $resultName = $result->getResult();
+        $username = $result->getUser()->getUsername();
+        $time = $result->getTime()->format("c");
+        $url = '/results/' . urlencode($resultName);
+
+
+        echo <<< ____MARCA_FIN
+                <tr>
+                    <td><label>$resultName</label></td>
+                    <td><label>$username</label></td> 
+                    <td><label>$time</label></td>                     
+                    <td><a href="$url">Ver Detalle</a></td>                    
+                    <td><a href="$url/delete">Eliminar</a></td>
+                    <td><a href="$url/userformupdate">Modificar</a></td>
+                </tr>
+    ____MARCA_FIN;
+    }
+
+   /* global $routes;
+    $rutaNewUSerForm = $routes->get('ruta_user_form')->getPath();
+    $TextButton= "new user";
+    getButtonNew($rutaNewUSerForm, $TextButton);*/
+}
+
+//-------------------------------------Html styles-----------------------------------
 
 /**
  * @param string $rutaNewUSerForm
