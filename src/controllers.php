@@ -38,11 +38,33 @@ function funcionUsuario(string $name): void
     echo $name." estoy en funcion usuario";
 }
 
-function crearUsuario(){
+function nuevoUsuario(){
+    $entityManager = DoctrineConnector::getEntityManager();
+    if (isset($_POST) && isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) {
+        $newUser = new User($_POST['username'],$_POST['email'],$_POST['password']);
 
-    echo " en crear usuario. Falta persisitir";
+        if (isset($_POST['enabled'])) {
+            $newUser->setEnabled(true);
+        }
+        if (isset($_POST['isAdmin'])) {
+            $newUser->setIsAdmin(true);
+        }
+        try {
+            $entityManager->persist($newUser);
+            $entityManager->flush();
+            echo " Usuario creado correctamente";
+            var_dump($newUser);
+
+        } catch (Throwable $exception) {
+            echo " El usuario no se pudo crear";
+            echo $exception->getMessage() . PHP_EOL;
+        }
+    } else {
+        echo " El username, email y password son campos obligatorios";
+    }
 
 }
+
 
 function list_action()
 {

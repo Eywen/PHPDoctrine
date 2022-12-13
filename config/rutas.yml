@@ -29,7 +29,7 @@ ruta_user_form:
 
 ruta_user_new:
     path: /user/
-    controller: 'crearUsuario'
+    controller: 'nuevoUsuario'
     methods:
         - POST
 
