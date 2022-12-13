@@ -9,7 +9,7 @@ ruta_user_list:
     path:     /users
     controller: 'funcionListadoUsuarios'
     methods:
-      - GET
+        - GET
 
 ruta_user:
     path:     /users/{name}
@@ -19,3 +19,22 @@ ruta_user:
     methods:
         - GET
         - DELETE
+
+
+ruta_user_form:
+    path: /user/userform
+    controller: 'vistaNewUser'
+    methods:
+      - GET
+
+ruta_user_new:
+    path: /user/
+    controller: 'crearUsuario'
+    methods:
+        - POST
+
+ruta_list_prueba:
+    path:     /pruebalist
+    controller: 'list_action'
+    methods:
+        - GET
