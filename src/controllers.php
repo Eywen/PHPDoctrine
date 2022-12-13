@@ -138,8 +138,8 @@ function getButtonNew(string $rutaNewUSerForm, string $TextButton): void
 /**
  * @return void
  */
-function getTableStyle(): void
-{
+function getTableStyle(): void{
+
     echo <<< ____MARCA_FIN
         <style>
             table, th, td {
@@ -162,12 +162,12 @@ function vistaNewUser()
 {
     global $routes;
     $ruta_user_new = $routes->get('ruta_user_new')->getPath();
-
+    getTableStyle();
     echo <<< ____MARCA_FIN
     
     <form method="post" action="$ruta_user_new">
         <h2>Creación de usuario</h2>
-        <table>
+        <table style='width:20%'>
             <tr><td><label>Nombre de usuario: </label></td> 
                 <td><input type="text" name="username" required></td></tr>
             <tr><td><label>Email: </label></td> 
