@@ -65,7 +65,15 @@ function list_action()
 
 function vistaListUSer($users): void
 {
-    echo "<table>
+    echo <<< ____MARCA_FIN
+        <style>
+            table, th, td {
+              border: 2px solid #96D4D4;
+              border-collapse: collapse;
+            }
+        </style>
+    ____MARCA_FIN;
+    echo "<table style='width:70%'>
             <tr>
                 <th><label>Nombre de usuario</label></th>
                 <th><label>Email</label></th>
@@ -95,7 +103,33 @@ function vistaListUSer($users): void
 
     global $routes;
     $rutaNewUSerForm = $routes->get('ruta_user_form')->getPath();
-    echo "<a href=$rutaNewUSerForm>Insertar nuevo usuario prueba con rutas href</a>";
+    //echo "<a href=$rutaNewUSerForm>Insertar nuevo usuario prueba con rutas href</a>";
+    echo <<< ____MARCA_FIN
+    <style>
+      button {
+        display: inline-block;
+        background-color: #0000CD;
+        border-radius: 10px;
+        border: 4px double #cccccc;
+        color: #F8F8FF;
+        text-align: center;
+        font-size: 15px;
+        padding: 10px;
+        width: 100px;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        -o-transition: all 0.5s;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+      }
+    </style>
+    
+        <form>
+              <button type="button" onclick="window.location.href='$rutaNewUSerForm';" >new user</button>
+        </form>
+    ____MARCA_FIN;
+
 
 }
 
