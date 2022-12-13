@@ -33,10 +33,6 @@ function funcionListadoUsuarios(): void
     vistaListUSer($users);
 }
 
-function funcionUsuario(string $name): void
-{
-    echo $name." estoy en funcion usuario";
-}
 
 function nuevoUsuario(){
     $entityManager = DoctrineConnector::getEntityManager();
@@ -62,8 +58,27 @@ function nuevoUsuario(){
     } else {
         echo " El username, email y password son campos obligatorios";
     }
-
 }
+
+function funcionUsuario(string $name): void
+{
+    $entityManager = DoctrineConnector::getEntityManager();
+
+    $user = $entityManager
+        ->getRepository(User::class)
+        ->findOneBy([ 'username' => $name ]);
+    var_dump($user);
+}
+
+function findUserByEmail(string $email):void{
+    $entityManager = DoctrineConnector::getEntityManager();
+    echo "email: $email";
+    $user = $entityManager
+        ->getRepository(User::class)
+        ->findOneBy([ 'email' => $email ]);
+    var_dump($user);
+}
+
 
 
 function list_action()
@@ -97,11 +112,14 @@ function vistaListUSer($users): void
                 <th colspan='3'><label>Operaciones</label></th>
             </tr>";
     foreach ($users as $user) {
+        $idUser = $user->getId();
         $username = $user->getUsername();
         $email = $user->getEmail();
         $enabled = $user->isEnabled();
         $isAdmin = $user->isAdmin();
         $url = '/users/' . urlencode($username);
+        $urlemail = '/users/'.urlencode($email);
+        $urlId = '/users/'.urlencode($idUser);
 
         echo <<< ____MARCA_FIN
                 <tr>
@@ -109,7 +127,7 @@ function vistaListUSer($users): void
                     <td><label>$email</label></td> 
                     <td><label>$enabled</label></td> 
                     <td><label>$isAdmin</label></td> 
-                    <td><a href="$url">Ver Detalle</a></td>
+                    <td><a href="$url">Ver Detalle</a></td>                    
                     <td><a href="">Eliminar</a></td>
                     <td><a href="">Modificar</a></td>
                 </tr>
@@ -118,10 +136,43 @@ function vistaListUSer($users): void
 
     global $routes;
     $rutaNewUSerForm = $routes->get('ruta_user_form')->getPath();
-    //echo "<a href=$rutaNewUSerForm>Insertar nuevo usuario prueba con rutas href</a>";
     $TextButton= "new user";
     getButtonNew($rutaNewUSerForm, $TextButton);
 }
+
+function testfun()
+{
+    echo "Your test function on button click is working";
+}
+
+function vistaNewUser()
+{
+    global $routes;
+    $ruta_user_new = $routes->get('ruta_user_new')->getPath();
+    getTableStyle();
+    echo <<< ____MARCA_FIN
+    
+    <form method="post" action="$ruta_user_new">
+        <h2>Creación de usuario</h2>
+        <table style='width:20%'>
+            <tr><td><label>Nombre de usuario: </label></td> 
+                <td><input type="text" name="username" required></td></tr>
+            <tr><td><label>Email: </label></td> 
+                <td><input type="email" name="email" required></td></tr>
+            <tr><td><label>Contraseña: </label></td>
+                <td><input type="password" name="password" required></td></tr>
+            <tr><td><label>Habilitado: </label></td> 
+                <td><input type="checkbox" name="enabled" checked></td></tr>
+            <tr><td><label>Es Admin: </label></td> 
+                <td><input type="checkbox" name="isAdmin"></td></tr>
+            <tr><td colspan="2"><button type="submit">Crear</button></td></tr>
+        </table>
+    </form>
+    ____MARCA_FIN;
+
+}
+
+///////////////////////////Html styles
 
 /**
  * @param string $rutaNewUSerForm
@@ -170,39 +221,4 @@ function getTableStyle(): void{
             }
         </style>
     ____MARCA_FIN;
-}
-
-
-function testfun()
-{
-    echo "Your test function on button click is working";
-}
-
-
-
-function vistaNewUser()
-{
-    global $routes;
-    $ruta_user_new = $routes->get('ruta_user_new')->getPath();
-    getTableStyle();
-    echo <<< ____MARCA_FIN
-    
-    <form method="post" action="$ruta_user_new">
-        <h2>Creación de usuario</h2>
-        <table style='width:20%'>
-            <tr><td><label>Nombre de usuario: </label></td> 
-                <td><input type="text" name="username" required></td></tr>
-            <tr><td><label>Email: </label></td> 
-                <td><input type="email" name="email" required></td></tr>
-            <tr><td><label>Contraseña: </label></td>
-                <td><input type="password" name="password" required></td></tr>
-            <tr><td><label>Habilitado: </label></td> 
-                <td><input type="checkbox" name="enabled" checked></td></tr>
-            <tr><td><label>Es Admin: </label></td> 
-                <td><input type="checkbox" name="isAdmin"></td></tr>
-            <tr><td colspan="2"><button type="submit">Crear</button></td></tr>
-        </table>
-    </form>
-    ____MARCA_FIN;
-
 }
