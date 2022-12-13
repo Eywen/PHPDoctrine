@@ -26,9 +26,21 @@ ruta_user_form:
     methods:
       - GET
 
+ruta_user_form_update:
+    path: /users/{name}/userformupdate
+    controller: 'vistaUpdateUser'
+    methods:
+      - GET
+
 ruta_user_new:
     path: /user/
     controller: 'funcionNuevoUsuario'
+    methods:
+        - POST
+
+ruta_user_update:
+    path: /users/{name}/update
+    controller: 'funcionUpdateUsuario'
     methods:
         - POST
 

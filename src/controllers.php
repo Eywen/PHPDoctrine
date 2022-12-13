@@ -60,10 +60,47 @@ function funcionNuevoUsuario(){
     }
 }
 
+function funcionUpdateUsuario(string $name){
+    echo " modificar $name";
+    $entityManager = DoctrineConnector::getEntityManager();
+    $user = $entityManager
+        ->getRepository(User::class)
+        ->findOneBy([ 'username' => $name ]);
+    var_dump($user);
+
+    if (isset($_POST)){
+        if (isset($_POST['username'])) {
+            $user->setUsername($_POST['username']);
+        }
+        if (isset($_POST['email'])) {
+            $user->setEmail($_POST['email']);
+        }
+        if (isset($_POST['password'])) {
+            $user->setPassword($_POST['password']);
+        }
+        if (isset($_POST['enabled'])) {
+            $user->setUsername(true);
+        }
+        if (isset($_POST['isAdmin'])) {
+            $user->setIsAdmin(true);
+        }
+
+        try {
+            $entityManager->persist($user);
+            $entityManager->flush();
+            echo " Usuario modificado correctamente";
+            var_dump($user);
+
+        } catch (Throwable $exception) {
+            echo " El usuario no se pudo modificar";
+            echo $exception->getMessage() . PHP_EOL;
+        }
+    }
+}
+
 function funcionUsuario(string $name): void
 {
     $entityManager = DoctrineConnector::getEntityManager();
-
     $user = $entityManager
         ->getRepository(User::class)
         ->findOneBy([ 'username' => $name ]);
@@ -134,6 +171,8 @@ function vistaListUSer($users): void
         $url = '/users/' . urlencode($username);
         $urlemail = '/users/'.urlencode($email);
         $urlId = '/users/'.urlencode($idUser);
+        global $routes;
+        $rutaNewUSerForm = $routes->get('ruta_user_form_update')->getPath();
 
         echo <<< ____MARCA_FIN
                 <tr>
@@ -143,13 +182,12 @@ function vistaListUSer($users): void
                     <td><label>$isAdmin</label></td> 
                     <td><a href="$url">Ver Detalle</a></td>                    
                     <td><a href="$url/delete">Eliminar</a></td>
-                    <td><a href="">Modificar</a></td>
+                    <td><a href="$url/userformupdate">Modificar</a></td>
                 </tr>
     ____MARCA_FIN;
     }
 
-    global $routes;
-    $rutaNewUSerForm = $routes->get('ruta_user_form')->getPath();
+
     $TextButton= "new user";
     getButtonNew($rutaNewUSerForm, $TextButton);
 }
@@ -164,26 +202,76 @@ function vistaNewUser()
     global $routes;
     $ruta_user_new = $routes->get('ruta_user_new')->getPath();
     getTableStyle();
+    getUSerForm($ruta_user_new);
+}
+
+function vistaUpdateUser(string $name)
+{
+    echo "En vista update user";
+    $ruta_user_update = "/users/$name/update";
+    getTableStyle();
+    getUSerFormUpdate($ruta_user_update,$name);
+}
+
+/**
+ * @param string $ruta_user_new
+ * @return void
+ */
+function getUSerForm(string $ruta_user_action): void
+{
+
     echo <<< ____MARCA_FIN
     
-    <form method="post" action="$ruta_user_new">
+    <form method="post" action="$ruta_user_action">
         <h2>Creación de usuario</h2>
         <table style='width:20%'>
             <tr><td><label>Nombre de usuario: </label></td> 
-                <td><input type="text" name="username" required></td></tr>
+                <td><input type="text" name="username"  required></td></tr>
             <tr><td><label>Email: </label></td> 
-                <td><input type="email" name="email" required></td></tr>
+                <td><input type="email" name="email"  required></td></tr>
             <tr><td><label>Contraseña: </label></td>
                 <td><input type="password" name="password" required></td></tr>
             <tr><td><label>Habilitado: </label></td> 
-                <td><input type="checkbox" name="enabled" checked></td></tr>
+                <td><input type="checkbox" name="enabled" ></td></tr>
             <tr><td><label>Es Admin: </label></td> 
-                <td><input type="checkbox" name="isAdmin"></td></tr>
+                <td><input type="checkbox" name="isAdmin"  = ></td></tr>
             <tr><td colspan="2"><button type="submit">Crear</button></td></tr>
         </table>
     </form>
     ____MARCA_FIN;
+}
 
+function getUSerFormUpdate(string $ruta_user_action, string $name): void{
+
+    $entityManager = DoctrineConnector::getEntityManager();
+    $user = $entityManager
+        ->getRepository(User::class)
+        ->findOneBy(['username' => $name]);
+
+    $username = $user->getUsername();
+    $email = $user->getEmail() ;
+    $enabled = $user->isEnabled() ? "checked" : "";
+    $isAdmin = $user->isAdmin() ? "checked" : "";
+
+    echo <<< ____MARCA_FIN
+    
+    <form method="post" action="$ruta_user_action">
+        <h2>Creación de usuario</h2>
+        <table style='width:20%'>
+            <tr><td><label>Nombre de usuario: </label></td> 
+                <td><input type="text" name="username" value="$username" ></td></tr>
+            <tr><td><label>Email: </label></td> 
+                <td><input type="email" name="email" value="$email" ></td></tr>
+            <tr><td><label>Contraseña: </label></td>
+                <td><input type="password" name="password" ></td></tr>
+            <tr><td><label>Habilitado: </label></td> 
+                <td><input type="checkbox" name="enabled" $enabled></td></tr>
+            <tr><td><label>Es Admin: </label></td> 
+                <td><input type="checkbox" name="isAdmin"  $isAdmin ></td></tr>
+            <tr><td colspan="2"><button type="submit">Crear</button></td></tr>
+        </table>
+    </form>
+    ____MARCA_FIN;
 }
 
 ///////////////////////////Html styles
