@@ -29,7 +29,6 @@ function funcionListadoUsuarios(): void
 
     $userRepository = $entityManager->getRepository(User::class);
     $users = $userRepository->findAll();
-    //var_dump($users);
     vistaListUSer($users);
 }
 
@@ -117,6 +116,7 @@ function findUserByEmail(string $email):void{
 }
 
 function funcionEliminarUsuario ($name){
+    echo "eliminado  $name"  . PHP_EOL;
     $entityManager = DoctrineConnector::getEntityManager();
     $user = $entityManager
         ->getRepository(User::class)
@@ -127,27 +127,9 @@ function funcionEliminarUsuario ($name){
     } catch (Throwable $exception) {
         echo $exception->getMessage() . PHP_EOL;
     }
-    echo "Usuario: " . $user->getId() . " eliminado correctamente: "  . PHP_EOL;
+    echo "Usuario: " . $name . " eliminado correctamente: "  . PHP_EOL;
 }
 
-
-
-function list_action()
-{
-    //$posts = "Blanca";
-    global $routes;
-    global $posts;
-    //$posts = $routes->get('ruta_user_list')->getPath();
-    $entityManager = DoctrineConnector::getEntityManager();
-
-    $userRepository = $entityManager->getRepository(User::class);
-    $posts = $userRepository->findAll();
-    //var_dump($posts);
-    //require 'templates/list.php';
-
-    //UserView::vista($posts);
-    vistaListUSer($posts);
-}
 
 ///////////////////////////  VISTAS  //////////////////////////////
 
@@ -171,8 +153,7 @@ function vistaListUSer($users): void
         $url = '/users/' . urlencode($username);
         $urlemail = '/users/'.urlencode($email);
         $urlId = '/users/'.urlencode($idUser);
-        global $routes;
-        $rutaNewUSerForm = $routes->get('ruta_user_form_update')->getPath();
+
 
         echo <<< ____MARCA_FIN
                 <tr>
@@ -187,7 +168,8 @@ function vistaListUSer($users): void
     ____MARCA_FIN;
     }
 
-
+    global $routes;
+    $rutaNewUSerForm = $routes->get('ruta_user_form')->getPath();
     $TextButton= "new user";
     getButtonNew($rutaNewUSerForm, $TextButton);
 }
