@@ -119,7 +119,7 @@ function findUserByEmail(string $email):void{
 }
 
 function funcionEliminarUsuario ($name){
-    echo "eliminado  $name"  . PHP_EOL;
+    echo "eliminando  $name"  . PHP_EOL;
     $entityManager = DoctrineConnector::getEntityManager();
     $user = $entityManager
         ->getRepository(User::class)
@@ -130,7 +130,7 @@ function funcionEliminarUsuario ($name){
     } catch (Throwable $exception) {
         echo $exception->getMessage() . PHP_EOL;
     }
-    echo "Usuario: " . $name . " eliminado correctamente: "  . PHP_EOL;
+    echo " Usuario: " . $name . " eliminado correctamente: "  . PHP_EOL;
 }
 
 //--------------------------------Results------------------------------
@@ -210,6 +210,20 @@ function funcionResultado(string $name): void
     var_dump($result);
 }
 
+function funcionEliminarResultado ($name){
+    echo "eliminando  Resultado $name"  . PHP_EOL;
+    $entityManager = DoctrineConnector::getEntityManager();
+    $result = $entityManager
+        ->getRepository(Result::class)
+        ->findOneBy(['result' => $name]);
+    try {
+        $entityManager->remove($result);
+        $entityManager->flush();
+    } catch (Throwable $exception) {
+        echo $exception->getMessage() . PHP_EOL;
+    }
+    echo " Resultado: " . $name . " eliminado correctamente: "  . PHP_EOL;
+}
 //--------------------------------  VISTAS  ----------------------------
 
 function vistaListUSer($users): void

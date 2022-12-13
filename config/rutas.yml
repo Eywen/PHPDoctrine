@@ -90,11 +90,13 @@ ruta_result_form_update:
     controller: 'vistaUpdateResult'
     methods:
         - GET
+
 ruta_result_update:
     path: /results/{name}/update
     controller: 'funcionUpdateResultado'
     methods:
         - POST
+
 ruta_result:
     path:     /results/{name}
     controller: 'funcionResultado'
@@ -102,3 +104,12 @@ ruta_result:
         name: _default_
     methods:
         - GET
+
+ruta_user_result:
+    path: /results/{name}/delete
+    controller: 'funcionEliminarResultado'
+    defaults:
+        name: _default_
+    methods:
+        - GET
+        - DELETE
