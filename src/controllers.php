@@ -34,7 +34,7 @@ function funcionListadoUsuarios(): void
 }
 
 
-function nuevoUsuario(){
+function funcionNuevoUsuario(){
     $entityManager = DoctrineConnector::getEntityManager();
     if (isset($_POST) && isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) {
         $newUser = new User($_POST['username'],$_POST['email'],$_POST['password']);
@@ -77,6 +77,20 @@ function findUserByEmail(string $email):void{
         ->getRepository(User::class)
         ->findOneBy([ 'email' => $email ]);
     var_dump($user);
+}
+
+function funcionEliminarUsuario ($name){
+    $entityManager = DoctrineConnector::getEntityManager();
+    $user = $entityManager
+        ->getRepository(User::class)
+        ->findOneBy(['username' => $name]);
+    try {
+        $entityManager->remove($user);
+        $entityManager->flush();
+    } catch (Throwable $exception) {
+        echo $exception->getMessage() . PHP_EOL;
+    }
+    echo "Usuario: " . $user->getId() . " eliminado correctamente: "  . PHP_EOL;
 }
 
 
@@ -128,7 +142,7 @@ function vistaListUSer($users): void
                     <td><label>$enabled</label></td> 
                     <td><label>$isAdmin</label></td> 
                     <td><a href="$url">Ver Detalle</a></td>                    
-                    <td><a href="">Eliminar</a></td>
+                    <td><a href="$url/delete">Eliminar</a></td>
                     <td><a href="">Modificar</a></td>
                 </tr>
     ____MARCA_FIN;

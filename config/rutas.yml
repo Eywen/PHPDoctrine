@@ -28,7 +28,7 @@ ruta_user_form:
 
 ruta_user_new:
     path: /user/
-    controller: 'nuevoUsuario'
+    controller: 'funcionNuevoUsuario'
     methods:
         - POST
 
@@ -39,6 +39,15 @@ ruta_user_find_by_email:
         name: _default_
     methods:
         - GET
+
+ruta_user_delete:
+    path: /users/{name}/delete
+    controller: 'funcionEliminarUsuario'
+    defaults:
+        name: _default_
+    methods:
+        - GET
+        - DELETE
 
 ruta_list_prueba:
     path:     /pruebalist
