@@ -147,7 +147,7 @@ function funcionListadoResultados(): void
 function funcionNuevoResultado(){
 
     if (isset($_POST) && isset($_POST['username']) && isset($_POST['result'])) {
-        echo " El resultado ";
+        echo " Nuevo resultado. ";
         $resultado = $_POST['result'];
         $entityManager = DoctrineConnector::getEntityManager();
         $user = $entityManager
@@ -156,8 +156,10 @@ function funcionNuevoResultado(){
         $newResult = new Result($resultado,$user,new DateTime('now'));
 
         try {
+            $entityManager->persist($newResult);
+            $entityManager->flush();
+            echo " Resultado creado correctamente";
             var_dump($newResult);
-
         } catch (Throwable $exception) {
             echo " El resultado no se pudo crear";
             echo $exception->getMessage() . PHP_EOL;
