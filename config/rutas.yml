@@ -72,3 +72,15 @@ ruta_results_list:
     controller: 'funcionListadoResultados'
     methods:
         - GET
+
+ruta_result_form:
+    path: /user/resultform
+    controller: 'vistaNewResult'
+    methods:
+        - GET
+
+ruta_result_new:
+    path: /results/
+    controller: 'funcionNuevoResultado'
+    methods:
+        - POST

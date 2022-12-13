@@ -144,6 +144,16 @@ function funcionListadoResultados(): void
     vistaListResults($results);
 }
 
+function funcionNuevoResultado(){
+    $entityManager = DoctrineConnector::getEntityManager();
+    if (isset($_POST) && isset($_POST['username']) && isset($_POST['result'])) {
+            echo " El resultado ";
+
+    } else {
+        echo " El user_id y resultado son campos obligatorios";
+    }
+}
+
 //--------------------------------  VISTAS  ----------------------------
 
 function vistaListUSer($users): void
@@ -293,15 +303,59 @@ function vistaListResults($results): void
                     <td><label>$time</label></td>                     
                     <td><a href="$url">Ver Detalle</a></td>                    
                     <td><a href="$url/delete">Eliminar</a></td>
-                    <td><a href="$url/userformupdate">Modificar</a></td>
+                    <td><a href="$url/resultformupdate">Modificar</a></td>
                 </tr>
     ____MARCA_FIN;
     }
 
-   /* global $routes;
-    $rutaNewUSerForm = $routes->get('ruta_user_form')->getPath();
-    $TextButton= "new user";
-    getButtonNew($rutaNewUSerForm, $TextButton);*/
+    global $routes;
+    $rutaNewResultForm = $routes->get('ruta_result_form')->getPath();
+    $TextButton= "new result";
+    getButtonNew($rutaNewResultForm, $TextButton);
+}
+
+function vistaNewResult()
+{
+    global $routes;
+    $ruta_result_new = $routes->get('ruta_result_new')->getPath();
+    getTableStyle();
+    getResultForm($ruta_result_new);
+}
+
+function getResultForm(string $ruta_result_new)
+{
+    $entityManager = DoctrineConnector::getEntityManager();
+    $users = $entityManager
+        ->getRepository(User::class)
+        ->findAll();
+
+
+    echo <<< ____MARCA_FIN
+    
+    <form method="post" action="$ruta_result_new">
+        <h2>Creación de resultado</h2>
+        <table style='width:15%'>
+          
+           <tr>
+            <td><label>Usuario: </label></td> 
+            <td><select name="username">
+    ____MARCA_FIN;
+
+    foreach ($users as $user) {
+        $username = $user->getUsername();
+        echo "<option value='$username'>$username</option>";
+    }
+
+    echo <<< ____MARCA_FIN
+               </select>
+            </td>
+           </tr>
+           <tr><td><label>Resultado: </label></td> 
+                <td><input type="number" name="result"  required></td></tr>  
+        <tr><td colspan="2"><button type="submit">Crear</button></td></tr>
+    </table>
+   </form>
+____MARCA_FIN;
 }
 
 //-------------------------------------Html styles-----------------------------------
