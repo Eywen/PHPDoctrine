@@ -32,6 +32,7 @@ function funcionListadoUsuarios(): void
 
     $userRepository = $entityManager->getRepository(User::class);
     $users = $userRepository->findAll();
+    getHome();
     vistaListUSer($users);
 }
 
@@ -106,6 +107,7 @@ function funcionUsuario(string $name): void
     $user = $entityManager
         ->getRepository(User::class)
         ->findOneBy([ 'username' => $name ]);
+    getHome();
     var_dump($user);
 }
 
@@ -120,6 +122,7 @@ function findUserByEmail(string $email):void{
 
 function funcionEliminarUsuario ($name){
     echo "eliminando  $name"  . PHP_EOL;
+    getHome();
     $entityManager = DoctrineConnector::getEntityManager();
     $user = $entityManager
         ->getRepository(User::class)
@@ -141,6 +144,7 @@ function funcionListadoResultados(): void
     $resultsRepository = $entityManager->getRepository(Result::class);
     $results = $resultsRepository->findAll();
     //echo "listado results "  . PHP_EOL;
+    getHome();
     vistaListResults($results);
 }
 
@@ -207,6 +211,7 @@ function funcionResultado(string $name): void
     $result = $entityManager
         ->getRepository(Result::class)
         ->findOneBy([ 'result' => $name ]);
+    getHome();
     var_dump($result);
 }
 
@@ -222,6 +227,7 @@ function funcionEliminarResultado ($name){
     } catch (Throwable $exception) {
         echo $exception->getMessage() . PHP_EOL;
     }
+    getHome();
     echo " Resultado: " . $name . " eliminado correctamente: "  . PHP_EOL;
 }
 //--------------------------------  VISTAS  ----------------------------
@@ -274,6 +280,7 @@ function testfun()
 
 function vistaNewUser()
 {
+    getHome();
     global $routes;
     $ruta_user_new = $routes->get('ruta_user_new')->getPath();
     getTableStyle();
@@ -282,11 +289,20 @@ function vistaNewUser()
 
 function vistaUpdateUser(string $name)
 {
-    echo "En vista update user";
+    getHome();
     $ruta_user_update = "/users/$name/update";
     getTableStyle();
     getUSerFormUpdate($ruta_user_update,$name);
 }
+
+function getHome(){
+    global $routes;
+    $rutaHome = $routes->get('ruta_raíz')->getPath();
+    $TextButton= "Home";
+    getButtonHome($rutaHome, $TextButton);
+
+}
+
 
 /**
  * @param string $ruta_user_new
@@ -331,7 +347,7 @@ function getUSerFormUpdate(string $ruta_user_action, string $name): void{
     echo <<< ____MARCA_FIN
     
     <form method="post" action="$ruta_user_action">
-        <h2>Creación de usuario</h2>
+        <h2>Modificacion de usuario</h2>
         <table style='width:20%'>
             <tr><td><label>Nombre de usuario: </label></td> 
                 <td><input type="text" name="username" value="$username" ></td></tr>
@@ -386,6 +402,7 @@ function vistaListResults($results): void
 
 function vistaNewResult()
 {
+    getHome();
     global $routes;
     $ruta_result_new = $routes->get('ruta_result_new')->getPath();
     getTableStyle();
@@ -431,7 +448,7 @@ ____MARCA_FIN;
 
 function vistaUpdateResult(string $name)
 {
-    echo "Update result";
+    getHome();
     $ruta_result_update = "/results/$name/update";
     getTableStyle();
     getResultFormUpdate($ruta_result_update,$name);
@@ -453,7 +470,7 @@ function getResultFormUpdate(string $ruta_result_action, string $name): void{
     echo <<< ____MARCA_FIN
     
     <form method="post" action="$ruta_result_action">
-        <h2>Creación de resultado</h2>
+        <h2>Modificacion de resultado</h2>
         <table style='width:15%'>
           
            <tr>
@@ -489,7 +506,7 @@ function getButtonNew(string $rutaNewUSerForm, string $TextButton): void
 {
     echo <<< ____MARCA_FIN
     <style>
-      button {
+      .newbutton {
         display: inline-block;
         background-color: #0000CD;
         border-radius: 10px;
@@ -509,7 +526,36 @@ function getButtonNew(string $rutaNewUSerForm, string $TextButton): void
     </style>
     
         <form>
-              <button type="button" onclick="window.location.href='$rutaNewUSerForm';" >$TextButton</button>
+              <button type="button" class="newbutton" onclick="window.location.href='$rutaNewUSerForm';" >$TextButton</button>
+        </form>
+    ____MARCA_FIN;
+}
+
+function getButtonHome(string $rutaNewUSerForm, string $TextButton): void
+{
+    echo <<< ____MARCA_FIN
+    <style>
+      .homebutton {
+        display: inline-block;
+        background-color: #6A5ACD;
+        border-radius: 10px;
+        border: 4px double #cccccc;
+        color: #F8F8FF;
+        text-align: center;
+        font-size: 15px;
+        padding: 10px;
+        width: 80px;
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        -o-transition: all 0.5s;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+      }
+    </style>
+    
+        <form>
+              <button type="button" class="homebutton" onclick="window.location.href='$rutaNewUSerForm';" >$TextButton</button>
         </form>
     ____MARCA_FIN;
 }
