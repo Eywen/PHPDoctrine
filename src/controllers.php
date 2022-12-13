@@ -145,10 +145,23 @@ function funcionListadoResultados(): void
 }
 
 function funcionNuevoResultado(){
-    $entityManager = DoctrineConnector::getEntityManager();
-    if (isset($_POST) && isset($_POST['username']) && isset($_POST['result'])) {
-            echo " El resultado ";
 
+    if (isset($_POST) && isset($_POST['username']) && isset($_POST['result'])) {
+        echo " El resultado ";
+        $resultado = $_POST['result'];
+        $entityManager = DoctrineConnector::getEntityManager();
+        $user = $entityManager
+            ->getRepository(User::class)
+            ->findOneBy(['username' => $_POST['username']]);
+        $newResult = new Result($resultado,$user,new DateTime('now'));
+
+        try {
+            var_dump($newResult);
+
+        } catch (Throwable $exception) {
+            echo " El resultado no se pudo crear";
+            echo $exception->getMessage() . PHP_EOL;
+        }
     } else {
         echo " El user_id y resultado son campos obligatorios";
     }
